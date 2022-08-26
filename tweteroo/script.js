@@ -17,11 +17,12 @@ function signUp() {
 }
 
 function loadTweets() {
-  axios.get("http://localhost:5000/tweets").then(res => {
-    const tweets = res.data;
+  axios.get("http://localhost:5000/tweets").then(res => {  
+  console.log(res)
+  const tweets = res.data;
     let tweetsHtml = '';
-
-    for (const tweet of tweets) {
+    console.log(tweets);
+    for (let tweet of tweets) {
       tweetsHtml += `
         <div class="tweet">
           <div class="avatar">
@@ -68,3 +69,4 @@ function escapeHtml(unsafe) {
          .replace(/"/g, "&quot;")
          .replace(/'/g, "&#039;");
  }
+
