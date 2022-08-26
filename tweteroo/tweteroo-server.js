@@ -6,18 +6,29 @@ app.use(cors())
 app.use(express.json())
 
 const user=[];
+const tweets=[];
 
 app.get('/tweets', (req, res)=>{
     app.use(cors())
-    console.log(user)
-    res.send(user)
+    if(tweets.length>10){
+        tweets.splice(0,1);
+    }
+    res.send(tweets)
 })
 
+app.post('/tweets', (req, res)=>{
+    app.use(cors())
+    console.log(req.body)
+    tweets.push({...req.body, avatar: user[0].avatar});
+    res.send("OK")
+
+})
 
 app.post('/sign-up', (req, res)=>{
     app.use(cors())
-    user.push({...req.body,tweet:''});
-    res.send('')
+    console.log(req.body)
+    user.push(req.body);
+    res.send("OK")
 
 })
 
