@@ -8,6 +8,17 @@ app.use(express.json())
 const user=[];
 const tweets=[];
 
+function testUrl(avatar){
+    try {
+        let url = new URL(avatar)
+        return true;
+    } catch(err) {
+        return false;
+    }
+       
+}
+
+
 app.get('/tweets', (req, res)=>{
     app.use(cors())
     if(tweets.length>10){
@@ -18,15 +29,19 @@ app.get('/tweets', (req, res)=>{
 
 app.post('/tweets', (req, res)=>{
     app.use(cors())
-    console.log(req.body)
     tweets.push({...req.body, avatar: user[0].avatar});
-    res.send("OK")
+    res.send("OK").status(201);
 
 })
 
 app.post('/sign-up', (req, res)=>{
+    console.log(!req.body.username , !req.body.avatar , !testUrl(req.body.avatar));
+    if(!req.body.username || !req.body.avatar || !testUrl(req.body.avatar) ){
+        return res.sendStatus(400)
+    }
+    
+
     app.use(cors())
-    console.log(req.body)
     user.push(req.body);
     res.send("OK")
 
