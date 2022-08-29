@@ -21,13 +21,23 @@ function testUrl(avatar){
 
 app.get('/tweets', (req, res)=>{
     app.use(cors())
-    if(tweets.length>10){
-        tweets.splice(0,1);
+    const sendTweets=[];
+    let cont  = 0;
+    for(let i = tweets.length-1 ; i>=0 ; i--){    
+        sendTweets.push(tweets[i])
+        if(cont===9){
+        i=-1;
+     }
+     cont ++
     }
-    res.send(tweets)
+    res.send(sendTweets)
 })
 
 app.post('/tweets', (req, res)=>{
+    if (req.body.tweet === "") {
+        return res.sendStatus(400);
+        
+    }
     app.use(cors())
     tweets.push({...req.body, avatar: user[0].avatar});
     res.send("OK").status(201);
@@ -35,15 +45,12 @@ app.post('/tweets', (req, res)=>{
 })
 
 app.post('/sign-up', (req, res)=>{
-    console.log(!req.body.username , !req.body.avatar , !testUrl(req.body.avatar));
     if(!req.body.username || !req.body.avatar || !testUrl(req.body.avatar) ){
         return res.sendStatus(400)
     }
-    
-
     app.use(cors())
     user.push(req.body);
-    res.send("OK")
+    res.send("OK").status(201)
 
 })
 
